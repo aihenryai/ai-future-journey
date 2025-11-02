@@ -3,5 +3,912 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>המסע לעתיד הבינה המל
-
+    <title>המסע לעתיד הבינה המלאכותית - הנרי שטאובר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Heebo:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* כותרות בגופן Alef - עתידני וגיאומטרי */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Alef', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* ריווח ויישור כותרות וטקסט חופשי */
+        h1 {
+            margin-bottom: 3rem;
+            line-height: 1.2;
+            text-align: center;
+        }
+        
+        h2 {
+            margin-bottom: 3rem;
+            line-height: 1.3;
+            text-align: center;
+        }
+        
+        h3 {
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+        
+        p {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        
+        /* כפתורים ממורכזים */
+        button, .shiny-btn {
+            margin: 0 auto;
+            display: inline-block;
+        }
+        
+        /* ריווח מיוחד לפסקת המשנה של הירו */
+        #hero p.morph-text {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        #hero p.text-gray-300 {
+            margin-bottom: 3rem;
+        }
+        
+        /* Canvas Background */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translate(-2px, -2px);
+            opacity: 0.8;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 2s infinite;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translate(2px, 2px);
+            opacity: 0.8;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            33% { transform: translate(-4px, 0); color: #ff00ff; }
+            66% { transform: translate(4px, 0); color: #00ffff; }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            33% { transform: translate(4px, 0); color: #00ffff; }
+            66% { transform: translate(-4px, 0); color: #ff00ff; }
+        }
+        
+        /* Fade In Out */
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ריווח בין אלמנטי תוכן */
+        .fade-in {
+            margin-bottom: 6rem;
+        }
+        
+        .fade-in:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* ריווח פנימי בבלוקים */
+        .mb-32 {
+            margin-bottom: 8rem !important;
+        }
+        
+        /* ריווח לכותרת טיימליין */
+        #timeline h2 {
+            margin-bottom: 5rem;
+            padding-top: 2rem;
+        }
+        
+        /* ריווח לתוכן הטיימליין */
+        #timeline .neon-card p {
+            margin-bottom: 2rem;
+        }
+        
+        #timeline .neon-card h3 {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Pulsating */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        /* Meteor Effect */
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #00f, 0 0 30px #0ff;
+            animation: meteor-fall 3s linear infinite;
+        }
+        
+        @keyframes meteor-fall {
+            0% {
+                transform: translate(0, 0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-300px, 300px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Orbiting Circles */
+        .orbit-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+        
+        .orbit {
+            position: absolute;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .orbit-1 { width: 100%; height: 100%; }
+        .orbit-2 { width: 75%; height: 75%; top: 12.5%; left: 12.5%; animation-duration: 15s; animation-direction: reverse; }
+        .orbit-3 { width: 50%; height: 50%; top: 25%; left: 25%; animation-duration: 10s; }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .orbit-item {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+        
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        /* Timeline Connector */
+        .timeline-line {
+            position: absolute;
+            right: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #0ff 0%, #f0f 50%, #ff0 100%);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Section */
+        section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+        }
+        
+        /* יישור כל הטקסט החופשי למרכז */
+        section > div {
+            text-align: center;
+        }
+        
+        /* ריווח גדול יותר בין כותרות לפסקאות */
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 2.5rem;
+        }
+        
+        p {
+            margin-bottom: 2rem;
+        }
+        
+        /* ריווח מיוחד לכותרות ראשיות */
+        h1 {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            margin-bottom: 4rem;
+        }
+        
+        /* ריווח בין אלמנטים בסקשנים */
+        section .max-w-4xl,
+        section .max-w-3xl,
+        section .max-w-6xl {
+            padding: 3rem 0;
+        }
+        
+        /* כפתורים עם ריווח */
+        .shiny-btn {
+            margin: 1rem 0.5rem;
+        }
+        
+        /* Morphing Text */
+        .morph-text {
+            background: linear-gradient(45deg, #0ff, #f0f, #ff0, #0ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Shiny Button */
+        .shiny-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .shiny-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .shiny-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Card Effects */
+        .neon-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0ff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            margin: 2rem auto;
+            text-align: right; /* יישור תוכן הכרטיס לימין */
+        }
+        
+        /* ריווח נוסף לכותרות ופסקאות בתוך הקארדים */
+        .neon-card h3 {
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .neon-card p {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        
+        .neon-card ul {
+            margin-top: 1.5rem;
+        }
+        
+        .neon-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* יישור רשימות (bullets) לימין בתוך קונטיינרים */
+        .neon-card ul,
+        .neon-card ol {
+            text-align: right;
+            list-style-position: inside;
+            padding-right: 0;
+            direction: rtl;
+        }
+        
+        .neon-card li {
+            text-align: right;
+            margin-bottom: 1rem;
+            direction: rtl;
+        }
+        
+        /* וידוא שהאייקונים והטקסט מסודרים נכון */
+        .neon-card .flex.items-center {
+            justify-content: flex-start;
+            direction: rtl;
+        }
+        
+        /* כרטיסים קטנים שצריכים להישאר ממורכזים */
+        .neon-card.inline-block {
+            text-align: center;
+        }
+        
+        .neon-card.inline-block p {
+            margin-bottom: 0;
+        }
+        
+        /* ריווח טוב יותר בין אייטמים ברשימות */
+        ul.space-y-3 li,
+        .space-y-3 > * {
+            margin-bottom: 1rem;
+        }
+        
+        .neon-card:hover {
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.5);
+            border-color: #f0f;
+        }
+        
+        /* ריווח בין כפתורים */
+        .flex.gap-6 {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        /* ריווח גדול בין פריטי טיימליין */
+        .mb-32 {
+            margin-bottom: 10rem !important;
+        }
+        
+        /* ריווח בין גריד איטמים */
+        .grid.gap-12 {
+            gap: 4rem;
+        }
+        
+        /* Typing Animation */
+        .typing {
+            overflow: hidden;
+            border-left: 3px solid #0ff;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .orbit-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .orbit-item {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+        
+        /* Footer - וידוא שהוא ממורכז */
+        footer {
+            text-align: center !important;
+            direction: ltr;
+        }
+        
+        footer p {
+            text-align: center !important;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Canvas -->
+    <canvas id="particleCanvas"></canvas>
+    
+    <!-- Meteors -->
+    <div id="meteors"></div>
+    
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="text-center max-w-4xl mx-auto fade-in">
+            <!-- קרדיט -->
+            <p class="text-cyan-400 font-bold mb-4 text-lg">
+                📱 אתר זה נוצר עם AI על ידי הנרי שטאובר
+            </p>
+            
+            <!-- כפתור לערוצים -->
+            <div class="mb-6">
+                <a href="https://taplink.cc/henry.ai" target="_blank" class="shiny-btn text-sm">
+                    לכל הערוצים והקישורים שלי 🚀
+                </a>
+            </div>
+            
+            <!-- Disclaimer -->
+            <p class="text-yellow-400 text-sm mb-8 max-w-2xl mx-auto">
+                ⚠️ <strong>אזהרה:</strong> כל מה שכתוב כאן הוא ספקולציה מבוססת על מגמות נוכחיות. ייתכן שהעתיד יהיה אפילו יותר מטורף 🤯
+            </p>
+            
+            <!-- כותרת ראשונה מוגדלת -->
+            <h1 class="text-7xl md:text-9xl font-black mb-6 glitch" data-text="המסע לעתיד">
+                המסע לעתיד
+            </h1>
+            <p class="text-2xl md:text-4xl mb-8 morph-text font-bold">
+                סוכני בינה מלאכותית משתלטים. דפדפנים נעלמים. הרובוטים מגיעים.
+            </p>
+            <p class="text-lg md:text-xl mb-12 text-gray-300">
+                ברוכים הבאים למסע בזמן לעתיד הקרוב - חודשים ספורים מפרידים אותנו מהמהפכה הטכנולוגית הגדולה ביותר בהיסטוריה האנושית
+            </p>
+            <button class="shiny-btn" onclick="scrollToTimeline()">
+                התחל את המסע
+            </button>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section id="timeline" class="grid-bg relative">
+        <div class="timeline-line"></div>
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl font-black text-center mb-20 morph-text">24 חודשים שישנו הכל</h2>
+            
+            <!-- Stage 1: AI נכנס לכל מקום -->
+            <div class="mb-32 fade-in">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-cyan-400 text-sm font-bold">בעוד 0-4 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="glitch" data-text="AI נכנס לכל מקום">AI נכנס לכל מקום</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            AI חוצה את רף המיליארד משתמשים - כולם משתמשים בצ׳אטבוטים. משקפי AR מגיעים לשוק. רובוטים מתחילים לעבוד במפעלים. פתאום זה כבר לא עתיד - זה היום-יום שלנו.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">💬</span>
+                                <span>מיליארד משתמשי AI פעילים - כמו אינסטגרם</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">👓</span>
+                                <span>משקפי AR ראשונים בשוק - Apple ו-Meta משיקים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🏭</span>
+                                <span>רובוטים הומנואידיים עובדים במפעלים ומחסנים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🚗</span>
+                                <span>מוניות רובוטיות מתרחבות ל-10 ערים נוספות</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage 2: הדיגיטלי והפיזי מתמזגים -->
+            <div class="mb-32 fade-in" style="animation-delay: 0.2s;">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-purple-400 text-sm font-bold">בעוד 4-8 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="morph-text">הדיגיטלי והפיזי מתמזגים</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            משקפי AR הופכים נפוצים. מידע דיגיטלי צף באוויר. תרגום בזמן אמת לכל שפה. סוכני AI מקבלים החלטות בשבילך. העולם שהכרת משתנה - הכל חכם, הכל מקושר.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🕶️</span>
+                                <span>משקפי AR בכל מקום - כמו אוזניות היום</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🌍</span>
+                                <span>תרגום בזמן אמת - כל שפה, כל מקום</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🤖</span>
+                                <span>סוכנים מבצעים משימות - קניות, תיאומים, הזמנות</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🚕</span>
+                                <span>מוניות ללא נהג זמינות בעיר שלך</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage 3: הבית החכם חושב -->
+            <div class="mb-32 fade-in" style="animation-delay: 0.4s;">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-green-400 text-sm font-bold">בעוד 8-12 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="morph-text">הבית החכם חושב</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            הבית מכיר את ההרגלים שלך ומנהל הכל אוטומטית. תאורה, חימום, מוזיקה - הכל מותאם אישית. הבית יודע מתי אתה עייף, מתי אתה רעב, מתי אתה צריך מנוחה. זה כמו בן-זוג מושלם שתמיד יודע מה אתה צריך.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🏠</span>
+                                <span>בית חכם מלא - מבין הרגלים ומנהל אוטומטית</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">💡</span>
+                                <span>תאורה וטמפרטורה אוטומטיים לפי מצב רוח</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🚗</span>
+                                <span>רכבים אוטונומיים בכל מקום - זול ונגיש</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🎵</span>
+                                <span>מוזיקה ובידור מותאמים למצב שלך</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage 4: הבריאות במעקב -->
+            <div class="mb-32 fade-in" style="animation-delay: 0.6s;">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-red-400 text-sm font-bold">בעוד 12-16 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="morph-text">הבריאות במעקב רציף</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            חיישנים על הגוף 24/7. AI מנתח את הבריאות שלך כל השעה. מחלות מתגלות לפני התסמינים. תרופות מותאמות אישית. הגוף שלך נטר כמו מכונית יוקרה - התראה לפני התקלה.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">⌚</span>
+                                <span>חיישני בריאות רציפים - סוכר, לחץ דם, דופק</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🏥</span>
+                                <span>AI מזהה מחלות לפני תסמינים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">💊</span>
+                                <span>תרופות מותאמות אישית לגנטיקה שלך</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">📊</span>
+                                <span>דוחות בריאות שבועיים עם המלצות מותאמות</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage 5: רובוטים בבית -->
+            <div class="mb-32 fade-in" style="animation-delay: 0.8s;">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-orange-400 text-sm font-bold">בעוד 16-20 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="morph-text">רובוטים בבית</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            רובוטים הומנואידיים נכנסים לבתים פרטיים. ניקיון, כביסה, סידור - הכל אוטומטי. אתה מתעורר לבית נקי בלי לעשות כלום. ״רוזי״ מהג׳טסונים כבר לא פנטזיה - היא בסלון שלך.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🤖</span>
+                                <span>רובוטים ביתיים - ניקיון וסידור מלאים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">👕</span>
+                                <span>כביסה אוטומטית - מכונה לקיפול ואיחסון</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🗑️</span>
+                                <span>הוצאת אשפה וניהול מחזור אוטומטיים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🍳</span>
+                                <span>עזרה בבישול והכנת ארוחות בסיסיות</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage 6: העבודה השתנתה -->
+            <div class="mb-32 fade-in" style="animation-delay: 1s;">
+                <div class="grid md:grid-cols-1 gap-12 items-center">
+                    <div class="neon-card">
+                        <span class="text-yellow-400 text-sm font-bold">בעוד 20-24 חודשים</span>
+                        <h3 class="text-4xl font-bold mb-4 mt-2">
+                            <span class="morph-text">העבודה השתנתה לחלוטין</span>
+                        </h3>
+                        <p class="text-xl text-gray-300 leading-relaxed mb-6">
+                            העבודה בעולם עברה מהפכה. AI עושה 85% מהעבודה הגלובלית - קוד, דוחות, ניתוחים, תכנון. האינטרנט שהכרנו נעלם - סוכנים עושים הכל. התפקידים השתנו מביצוע לניהול ויצירה. העולם עובד אחרת.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🌍</span>
+                                <span>AI עושה 85% מהעבודה העולמית</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">🌐</span>
+                                <span>האינטרנט המסורתי נעלם - סוכנים עושים הכל</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">👥</span>
+                                <span>בני אדם מתמקדים באסטרטגיה, יצירתיות ומערכות יחסים</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-2xl">⚡</span>
+                                <span>פחות שגרה משעממת, יותר עבודה משמעותית</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section id="cta" class="grid-bg">
+        <div class="text-center max-w-3xl mx-auto fade-in">
+            <h2 class="text-5xl md:text-6xl font-black mb-8">
+                <span class="morph-text">מוכנים לעתיד?</span>
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+                העתיד לא מחכה לאף אחד. הטכנולוגיה משתנה מהר יותר ממה שחשבתם. או שאתם עולים על הגל, או שהוא עובר מעליכם.
+            </p>
+            <div class="space-y-4 mb-12">
+                <div class="neon-card inline-block">
+                    <p class="text-lg">
+                        <span class="text-cyan-400 font-bold">הנרי שטאובר</span> - יוצר תוכן, מרצה ומומחה בבינה מלאכותית
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-6 justify-center">
+                <a href="https://youtube.com/@AIWithHenry?sub_confirmation=1" target="_blank" class="shiny-btn">
+                    ערוץ היוטיוב שלי
+                </a>
+                <a href="https://taplink.cc/henry.ai" target="_blank" class="shiny-btn">
+                    כל הקישורים שלי
+                </a>
+            </div>
+            <p class="text-gray-500 mt-12 text-sm">
+                ליצירת קשר: 0585005171 | Henrystauber22@gmail.com
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-8 text-center text-gray-600 relative z-10" style="direction: ltr; text-align: center;">
+        <p style="text-align: center;">© 2025 הנרי שטאובר - כל הזכויות שמורות</p>
+        <p class="text-sm mt-2" style="text-align: center;">נבנה עם אהבה (וקצת AI) 🤖❤️</p>
+    </footer>
+    
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const particles = [];
+        const particleCount = 100;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.color = `rgba(0, ${Math.random() * 255}, 255, ${Math.random()})`;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                // Glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+            }
+        }
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${1 - distance / 150})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                });
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Meteors
+        function createMeteor() {
+            const meteor = document.createElement('div');
+            meteor.className = 'meteor';
+            meteor.style.top = Math.random() * 50 + '%';
+            meteor.style.right = Math.random() * 100 + '%';
+            meteor.style.animationDelay = Math.random() * 3 + 's';
+            document.getElementById('meteors').appendChild(meteor);
+            
+            setTimeout(() => meteor.remove(), 3000);
+        }
+        
+        setInterval(createMeteor, 1000);
+        
+        // Smooth scroll
+        function scrollToTimeline() {
+            document.getElementById('timeline').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 1s ease';
+            observer.observe(el);
+        });
+        
+        // Cursor effect
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.createElement('div');
+            cursor.style.position = 'fixed';
+            cursor.style.width = '4px';
+            cursor.style.height = '4px';
+            cursor.style.borderRadius = '50%';
+            cursor.style.background = 'rgba(0, 255, 255, 0.5)';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.pointerEvents = 'none';
+            cursor.style.zIndex = '9999';
+            document.body.appendChild(cursor);
+            
+            setTimeout(() => cursor.remove(), 500);
+        });
+    </script>
+</body>
+</html>
